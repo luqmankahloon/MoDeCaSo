@@ -9,6 +9,10 @@
         <div class="pull-left" style="width: 80%;">
             <a class="btn btn-success" ng-click="start_project()" ng-disabled="project.status != 'READY'"><span class="glyphicon glyphicon-play"></span> Start Project</a>
             <a class="btn btn-info" ng-disabled="project.status != 'FINISHED'" href="/frontend/projects/results/{{ project.key }}"><span class="glyphicon glyphicon-info-sign"></span> View Results</a>
+            <!-- Added by Luqman Ahmad -->
+            <a class="btn btn-success" ng-disabled="project.status != 'FINISHED'" href="/frontend/projects/analysis/{{ project.key }}"><span class="glyphicon glyphicon-play"></span> Start Analysis</a>
+            <a class="btn btn-info" ng-disabled="project.status != 'FINISHED'" href="/frontend/projects/analysis/results/{{ project.key }}"><span class="glyphicon glyphicon-stats"></span> View Analysis Results</a>
+            
             <a ng-click="load_project();" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Reload</a>
         </div>
         <div class="pull-right">

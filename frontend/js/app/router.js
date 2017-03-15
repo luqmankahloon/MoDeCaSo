@@ -853,6 +853,101 @@ webapp.config([
                 }
             }
         )
+        // Edited by Luqman Ahmad
+        .state(
+            "/projects/analysis",
+            {
+                url: "/frontend/projects/analysis/:key",
+                role: "MODERATOR",
+                title: "Project Analysis",
+                views: {
+                    "mainView": {
+                        controller:     "analysis_controller",
+                        resolve:        {
+                            key: [
+                                "$stateParams",
+                                function($stateParams)
+                                {
+                                    return $stateParams.key;
+                                }
+                            ]
+                        },
+                        templateUrl:    "/frontend/tpl/projects/analysis.tpl"
+                    },
+                    "headerView": {
+                        templateUrl:    "/frontend/tpl/header.tpl"
+                    },
+                    "footerView": {
+                        templateUrl:    "/frontend/tpl/footer.tpl"
+                    }
+                }
+            }
+        )
+        .state(
+            "/projects/analysis/results",
+            {
+                url: "/frontend/projects/analysis/results/:key",
+                role: "MODERATOR",
+                title: "Analysis Results",
+                views: {
+                    "mainView": {
+                        controller:     "analysis_results_controller",
+                        resolve:        {
+                            key: [
+                                "$stateParams",
+                                function($stateParams)
+                                {
+                                    return $stateParams.key;
+                                }
+                            ]
+                        },
+                        templateUrl:    "/frontend/tpl/projects/analysis_results.tpl"
+                    },
+                    "headerView": {
+                        templateUrl:    "/frontend/tpl/header.tpl"
+                    },
+                    "footerView": {
+                        templateUrl:    "/frontend/tpl/footer.tpl"
+                    }
+                }
+            }
+        )
+        .state(
+            "/projects/analysis/analysis_results",
+            {
+                url: "/frontend/projects/analysis/analyser_results/:project_key/:user_name",
+                role: "MODERATOR",
+                title: "Analyser Model",
+                views: {
+                    "mainView": {
+                        controller:     "analyser_results_controller",
+                        resolve:        {
+                            project_key: [
+                                "$stateParams",
+                                function($stateParams)
+                                {
+                                    return $stateParams.project_key;
+                                }
+                            ],
+                            user_name: [
+                                "$stateParams",
+                                function($stateParams)
+                                {
+                                    return $stateParams.user_name;
+                                }
+                            ]
+                        },
+                        templateUrl:    "/frontend/tpl/projects/analyser_results.tpl"
+                    },
+                    "headerView": {
+                        templateUrl:    "/frontend/tpl/header.tpl"
+                    },
+                    "footerView": {
+                        templateUrl:    "/frontend/tpl/footer.tpl"
+                    }
+                }
+            }
+        )
         .state(
             "/experiment",
             {

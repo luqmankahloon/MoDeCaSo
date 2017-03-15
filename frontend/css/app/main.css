@@ -117,3 +117,9 @@ iframe[name=download_iframe] {
 .dontshow {
     visibility: hidden;
 }
+/* Added By Luqman Ahmad. To show the points in NVD3 Graph */
+.nvd3 .nv-groups .nv-point {
+    stroke-opacity: 1!important;
+    stroke-width: 5px!important;
+    fill-opacity: 1!important;
+}

@@ -59,9 +59,11 @@ var filters = angular.module(
     ]
 );
 
+// Edited by Luqman Ahmad. Added nvd3 sor graphs
 var webapp = angular.module(
     "webapp",
     [
+        "nvd3",
         "services",
         "controllers",
         "filters",

@@ -9,9 +9,9 @@
         Your submission was successful.
     </p>
     <p>
-        Click on "Close" to see your Model.
+        Click on "Close" to see your Model1.
     </p>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" ui-sref="/frontend/projects/analysis/analyser_results/{{ key }}/{{ user_name }}" ng-click="$close();">Close</button>
+    <button type="button" class="btn btn-default" ui-sref="/projects/analysis/analyser_results/{{ key }}/{{ user_name }}" ng-click="$close();">Close</button>
 </div>

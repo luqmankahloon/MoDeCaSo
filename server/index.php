@@ -36,12 +36,22 @@ require "controllers/projects/cards_controller.class.php";
 require "controllers/projects/messages_controller.class.php";
 require "controllers/projects/participants_controller.class.php";
 require "controllers/projects/projects_controller.class.php";
+
+// Added by Luqman Ahmad
+require "controllers/projects/analysis_controller.class.php";
+require "controllers/projects/analysis_results_controller.class.php";
+
 require "controllers/auth_controller.class.php";
 
 require "model/administration/server_maintenance_service.class.php";
 require "model/administration/user_management.class.php";
 require "model/experiment/experiment.class.php";
 require "model/projects/cards.class.php";
+
+// Added by Luqman Ahmad
+require "model/projects/analysis.class.php";
+require "model/projects/analysis_results.class.php";
+
 require "model/projects/messages.class.php";
 require "model/projects/participants.class.php";
 require "model/projects/projects.class.php";
@@ -58,6 +68,11 @@ use controllers\auth_controller;
 use controllers\server_maintenance_service_controller;
 use controllers\user_management_controller;
 use controllers\projects_controller;
+
+// Added by Luqman Ahmad
+use controllers\analysis_controller;
+use controllers\analysis_results_controller;
+
 use controllers\cards_controller;
 use controllers\participants_controller;
 use controllers\messages_controller;
@@ -141,6 +156,11 @@ try {
     new user_management_controller();
     new experiment_controller();
     new projects_controller();
+    
+    // Added by Luqman Ahmad
+    new analysis_controller();
+    new analysis_results_controller();
+    
     new cards_controller();
     new participants_controller();
     new messages_controller();

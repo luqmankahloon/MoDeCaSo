@@ -330,6 +330,30 @@
                     <p ng-bind-html="html_save(messages['email_timeout']['message'])"></p>
                 </div>
             </div>
+            <!-- Added by Luqman Ahmad -->
+            <div class="row">
+                <div class="col-md-4 message">
+                    <h4>
+                        Category Analysis Message
+                        <span class="pull-right">
+                            <a href="/frontend/projects/{{ project.key }}/edit_message/category_analysis" class="btn btn-xs btn-warning" tooltip="Edit Text" tooltip-append-to-body="true"><span class="glyphicon glyphicon-edit"></span></a>
+                        </span>
+                    </h4>
+                    <p ng-bind-html="html_save(messages['category_analysis']['message'])"></p>
+                </div>
+                <div class="col-md-4 message">
+                    <h4>
+                        Suggested Solution Message
+                        <span class="pull-right">
+                            <a href="/frontend/projects/{{ project.key }}/edit_message/suggested_solution" class="btn btn-xs btn-warning" tooltip="Edit Text" tooltip-append-to-body="true"><span class="glyphicon glyphicon-edit"></span></a>
+                        </span>
+                    </h4>
+                    <p ng-bind-html="html_save(messages['suggested_solution']['message'])"></p>                    
+                </div>
+                <div class="col-md-4 message">
+                    
+                </div>
+            </div>
         </div>
     </div>
     <div class="panel panel-default">

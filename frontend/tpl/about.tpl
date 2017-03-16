@@ -9,11 +9,11 @@
         <div class="pull-left">
             <p>
                 <strong>MoDeCaSo</strong><br>
-                <em>A Web Application for Modified Delphi Card Sorting Experiments</em><br>
-                Version 1.0.0
+                <em>A Web Application for Modified Delphi Card Sorting Experiments and Analysis</em><br>
+                Version 1.0.1
             </p>
             <p>
-                Copyright &copy; 2014–2015 Peter Folta. All rights reserved.
+                Copyright &copy; 2014–2017 Peter Folta, Luqman Ahmad. All rights reserved.
             </p>
             <p>
                 This product also includes code written by third parties.
@@ -29,18 +29,28 @@
     <div class="clearfix" style="margin-bottom: 15px;">
         <div class="pull-left">
             <address>
-                <strong>Peter Folta</strong>
+                <strong>Peter Folta - Luqman Ahmad</strong>
             </address>
             <p>
                 <a href="http://www.peterfolta.net" target="_blank"><span class="glyphicon glyphicon-globe" style="padding-right: 5px;"></span>Peter Folta</a>
+                <a href="mailto:luqmankahloon@gmail.com" target="_blank"><span class="glyphicon glyphicon-envelope" style="padding-right: 5px;"></span>Luqman Ahmad</a>
             </p>
         </div>
         <div class="pull-right">
             <img src="/frontend/img/pf-logo.svg" style="width: 375px; height: 58px;">
         </div>
     </div>
+
+    <div class="clearfix" style="margin-bottom: 15px;">
+        <div class="pull-left">
+
+        </div>
+        <div class="pull-right">
+            <img src="/frontend/img/la.png" style="width: 375px; height: 58px;">
+        </div>
+    </div>
     <p style="margin-bottom: 5px;">
-        <em>As part of a Bachelor's Thesis at</em>
+        <em>As part of Master's and  Bachelor's Thesis at</em>
     </p>
     <div class="clearfix">
         <div class="pull-left">

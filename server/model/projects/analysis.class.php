@@ -474,7 +474,7 @@ class analysis
 
         $project_id = projects::get_project_id($project_key);
 
-        //$this->database->delete("experiment_final_models", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'");
+        $this->database->delete("experiment_final_models", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'");
 
         foreach ($data as $category) {
             $category_text = $category->text;

@@ -19,7 +19,8 @@ controllers.controller(
         "$modal",
         "session_service",
         "key",
-        function($scope, $rootScope, $http, $modal, session_service, key)
+        "$state",
+        function($scope, $rootScope, $http, $modal, session_service, key,$state)
         {
             $scope.key = key;
 
@@ -378,6 +379,12 @@ controllers.controller(
                     }
                 );
             };
+            $scope.changeState = function () {
+                //$scope.$close(true);
+                $state.go('/projects/analysis/analysis_results',{project_key: $scope.key, user_name: $scope.user_name});
+                };
+
+
 
             $scope.show_info_message = function()
             {

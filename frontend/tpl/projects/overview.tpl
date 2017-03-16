@@ -30,7 +30,7 @@
                             <button type="button" class="btn btn-default" ng-click="order_predicate = 'title'; order_reverse = false;"><span class="glyphicon glyphicon-chevron-down"></span></button>
                         </div>
                     </th>
-                    <th style="width: 19%;">
+                    <th style="width: 15%;">
                         Key
                         <div class="btn-group btn-group-xs pull-right">
                             <button type="button" class="btn btn-default" ng-click="order_predicate = 'key'; order_reverse = true;"><span class="glyphicon glyphicon-chevron-up"></span></button>
@@ -58,7 +58,7 @@
                             <button type="button" class="btn btn-default" ng-click="order_predicate = 'status'; order_reverse = false;"><span class="glyphicon glyphicon-chevron-down"></span></button>
                         </div>
                     </th>
-                    <th style="width: 11%;">
+                    <th style="width: 15%;">
                         Actions
                     </th>
                 </tr>
@@ -85,6 +85,8 @@
                             <a href="/frontend/projects/{{ project.key }}" class="btn btn-warning" tooltip="Configure Project" tooltip-append-to-body="true"><span class="glyphicon glyphicon-cog"></span></a>
                             <a href="/frontend/projects/delete_project/{{ project.key }}" class="btn btn-danger" tooltip="Delete Project" tooltip-append-to-body="true"><span class="glyphicon glyphicon-trash"></span></a>
                             <a ng-disabled="project.status != 'FINISHED'" href="/frontend/projects/results/{{ project.key }}" class="btn btn-success" tooltip="View Results" tooltip-append-to-body="true"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <!-- Added by Luqman Ahmad -->
+                            <a ng-disabled="project.status != 'FINISHED'" href="/frontend/projects/analysis/results/{{ project.key }}" class="btn btn-success" tooltip="View Analysis Results" tooltip-append-to-body="true"><span class="glyphicon glyphicon-stats"></span></a>
                         </div>
                     </td>
                 </tr>

@@ -110,6 +110,22 @@ class projects
                 'last_modified'         => 0
             ));
 
+            $this->database->insert("project_messages", array(
+                'project'               => $project_id,
+                'type'                  => "category_analysis",
+                'message'               => $this->config->get_config_value("project", "category_analysis"),
+                'created'               => $GLOBALS['timestamp'],
+                'last_modified'         => 0
+            ));
+
+            $this->database->insert("project_messages", array(
+                'project'               => $project_id,
+                'type'                  => "suggested_solution",
+                'message'               => $this->config->get_config_value("project", "suggested_solution"),
+                'created'               => $GLOBALS['timestamp'],
+                'last_modified'         => 0
+            ));
+            
             $result = array(
                 'error'         => false,
                 'msg'           => "project_created"

@@ -59,6 +59,23 @@ CREATE TABLE IF NOT EXISTS `experiment_models` (
   KEY `card` (`card`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=896 ;
 
+--
+-- Table structure for table `experiment_final_models`
+--
+
+CREATE TABLE IF NOT EXISTS `experiment_final_models` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `category` varchar(255) NOT NULL,
+  `card` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project` (`project`),
+  KEY `card` (`card`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
 -- --------------------------------------------------------
 
 --

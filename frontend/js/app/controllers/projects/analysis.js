@@ -80,6 +80,16 @@ controllers.controller(
                         $scope.graph_data             = response.data.graph_data;
                         $scope.options = setOptions();
                         $scope.data = dataCollection();
+                        //console.log($scope.data);
+                        $scope.max_length = 0;
+                        $scope.max_length_index = 0;
+                        for(i = 0 ; i < $scope.data.length; i++) {
+                            if($scope.data[i].values.length > $scope.max_length){
+                                $scope.max_length = $scope.data[i].values.length;
+                                $scope.max_length_index = i;
+                            }
+                        }
+                        //console.log($scope.max_length_index);
                         $scope.message1          = response.data.message.replace(/\n/gi, "<br>");
                         $scope.message1          =$scope.message1.replace("%first_name%",session_service.get("first_name"));
                         $scope.message1          =$scope.message1.replace("%last_name%",session_service.get("last_name"));
@@ -156,6 +166,7 @@ controllers.controller(
                         legend: {
                             //updateState: false,
                             //width: 300,
+
                             dispatch: {
                                 legendClick: function(e) {
                                     
@@ -168,13 +179,9 @@ controllers.controller(
                                     $scope.$apply();
                                 },
                                 legendDblclick: function (e) {
-                                    // throw exception to disable the double click on legend
                                     
-                                    try {
-                                        throw "legendDblclick disabled";
-                                    } catch(e) {
-                                        alert("Caught: "+e)
-                                    }
+                                    e.preventDefault();
+                                    //throw "legendDblclick disabled";
 
                                 }
 
@@ -190,7 +197,10 @@ controllers.controller(
                             ticks: $scope.users.length,
                             tickFormat: function(i){
                                 //converting name to F.LastName
-                                return $scope.data[1].values[i].label.split(' ').slice(0, -1).join(' ').slice(0, 1)+". "+$scope.data[1].values[i].label.split(' ').slice(-1).join(' ')
+                                if (i % 1 == 0){
+                                    return $scope.data[$scope.max_length_index].values[i].label.split(' ').slice(0, -1).join(' ').slice(0, 1)+". "+$scope.data[$scope.max_length_index].values[i].label.split(' ').slice(-1).join(' ');
+                                }
+                                //return false;
                                 
                             }
                         },
@@ -250,21 +260,20 @@ controllers.controller(
            
                        /* When clicked on a category in Legend of graph.*/
             $scope.back_analysis= function(){
-                //$route.reload();
-               /* console.log($scope.width);
-                $scope.width=document.getElementById("graph-width").offsetWidth;
-                document.getElementById("graph-width").width=936;
-                console.log($scope.width);*/
+
+                
                 $scope.show_message = false;
                 $("#solution-chart").hide();
                 $("#analysis-chart").show();
+                window.dispatchEvent(new Event('resize'));
+
                 $scope.message = $scope.message1;
                 $scope.status_flash = {
                     "show":     false,
                     "type":     null,
                     "message":  null
                 };
-                //$scope.apply();
+
             }
             $scope.show_solution= function(){
                 $("#analysis-chart").hide();
@@ -280,12 +289,16 @@ controllers.controller(
                 }).then(
                     function(response)
                     {
-                        $("#solution-chart").show();
+                        //$("#solution-chart").show();
 
                         $scope.model_categories       = response.data.model_categories;
                         $scope.unsorted_cards   = response.data.unsorted_cards;
 
+                        console.log($scope.unsorted_cards);
+                        console.log($scope.model_categories);
+
                         $scope.unsorted_cards.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
+                        $scope.model_categories.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
                         for (var i = 0; i < $scope.model_categories.length; i++) {
                             $scope.model_categories[i].cards.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
                         }
@@ -345,7 +358,7 @@ controllers.controller(
                 "stop":                     function(e, ui)
                 {
                     $scope.unsorted_cards.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
-
+                    $scope.model_categories.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
                     for (var i = 0; i < $scope.model_categories.length; i++) {
                         $scope.model_categories[i].cards.sort(sort_by("text", false, function (a) {
                             return a.toUpperCase()

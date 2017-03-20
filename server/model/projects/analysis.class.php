@@ -203,12 +203,20 @@ class analysis
             //print_r($model_frequency); 
  
             /* Getting Final model to show in suggested solution */
+            
             $final_model_frequency = [];
+            // putting all categories to a new array
+            foreach ($model_frequency as $key => $value) {
+                $final_model_frequency[$key] = [];
+            }
+            //print_r($final_model_frequency);
             $processed_cards = [];
             foreach ($model_frequency as $cat_frequency=>$current_card_frequency) {                                     
                 foreach($current_card_frequency as $current_cards=>$current_frequency) {             
                     $temp = $this->get_compared_item($model_frequency,$cat_frequency,$current_cards);
                     //$final_model_frequency[$temp['cat']][$temp['card']] = $temp['freq']; 
+                    //print_r($temp);
+                    //print_r($processed_cards);
                     if (!in_array($temp['card'], $processed_cards)) {
                         array_push($processed_cards,$temp['card'] );
                         $final_model_frequency[$temp['cat']][$temp['card']] = $temp['freq']; 
@@ -290,7 +298,7 @@ class analysis
       
             }
 
-//print_r($cards);
+//print_r($model_categories);
             //print_r($model_categories);
             $result = array(
                 'error'             => false,

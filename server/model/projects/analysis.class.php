@@ -103,6 +103,7 @@ class analysis
             $final_cat=array_map("array_unique",$final_cat);
             
             //print_r($this->calculate_cards($final_users));
+            //print_r($final_cat);
             //print_r($super_cat);
             $cat_fix_ids = (array_keys($final_cat));
             foreach ($final_cat as $value => $all_label) {
@@ -124,7 +125,7 @@ class analysis
                     $j++;
                 }
             }
-
+//print_r($graph_data);
             $result = array(
                 'error'         => false,
                 'key'           => $project_key,
@@ -171,7 +172,7 @@ class analysis
             
             /* Getting categories and cards (model) for all users (user by user)*/
             $participants_model = $this->get_participants_model($project_participants,$project_id);
-            
+
             $all_model_frequency = [];
             foreach($participants_model as $user => $user_model) {
                 foreach ($user_model as $cat => $cards) {
@@ -290,10 +291,12 @@ class analysis
                 $cards[$j]['info'] = $info;
             }
             $flash_message="";
+            $number_of_flash_cat=0;
             foreach ($model_categories as $m_cat) {                                     
 
                     if(empty($m_cat['cards'])){
                         $flash_message .= "<br />".$m_cat['text'];
+                        $number_of_flash_cat++;
                     }
       
             }
@@ -301,12 +304,13 @@ class analysis
 //print_r($model_categories);
             //print_r($model_categories);
             $result = array(
-                'error'             => false,
-                'project'           => $project,
-                'msg'               => $this->get_project_messages($project_id,"suggested_solution"),
-                'model_categories'  => $model_categories ,
-                'unsorted_cards'    => $cards,
-                'flash_message'    => $flash_message
+                'error'                 => false,
+                'project'               => $project,
+                'msg'                   => $this->get_project_messages($project_id,"suggested_solution"),
+                'model_categories'      => $model_categories ,
+                'unsorted_cards'        => $cards,
+                'flash_message'         => $flash_message,
+                'number_of_flash_cat'   => $number_of_flash_cat,
                 );
         }   
         else
@@ -477,12 +481,20 @@ class analysis
             return $super_cat;
     }
 
-    public function save_final_model($project_key, $data,$user_id)
+    public function save_final_model($project_key, $data, $comment, $user_id)
     {
 
         $project_id = projects::get_project_id($project_key);
 
-        $this->database->delete("experiment_final_models", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'");
+        $this->database->insert("experiment_analysis", array(
+            'user_id'       => $user_id,
+            'project'       => $project_id,
+            'comment'      => $comment
+        ));
+        $analysis_id = $this->database->get_insert_id();
+        
+
+        //$this->database->delete("experiment_final_models", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'");
 
         foreach ($data as $category) {
             $category_text = $category->text;
@@ -491,6 +503,7 @@ class analysis
                 $card_id = $card->id;
 
                 $this->database->insert("experiment_final_models", array(
+                    'analysis_id'   => $analysis_id,
                     'project'       => $project_id,
                     'user_id'       => $user_id,
                     'category'      => $category_text,

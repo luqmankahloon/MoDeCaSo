@@ -26,19 +26,22 @@
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th style="width: 6%;">
+                    <th style="width: 5%;">
                         Order
                     </th>
-                    <th style="width: 22%;">
+                    <th style="width: 10%;">
                         First Name
                     </th>
-                    <th style="width: 22%;">
+                    <th style="width: 10%;">
                         Last Name
                     </th>
-                    <th style="width: 30%;">
+                    <th style="width: 20%;">
                         Email Address
                     </th>
-                    <th style="width: 20%;">
+                    <th style="width: 30%;">
+                        Comments
+                    </th>
+                    <th style="width: 25%;">
                         Actions
                     </th>
                 </tr>
@@ -49,25 +52,41 @@
                         <strong>{{ $index+1 }}</strong>
                     </td>
                     <td>
-                        <strong>{{ analyser.first_name }}</strong>
+                        <strong>{{ analyser.user_data.first_name }}</strong>
                     </td>
                     <td>
-                        <strong>{{ analyser.last_name }}</strong>
+                        <strong>{{ analyser.user_data.last_name }}</strong>
                     </td>
                     <td>
-                        {{ analyser.email }}
+                        {{ analyser.user_data.email }}
+                    </td>
+                    <td ng-bind-html="html_save(analyser.comment)">
+                        
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm">
-                            <a  href="/frontend/projects/analysis/analyser_results/{{ project.key }}/{{ analyser.username }}" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Model</a>
-                            <a href="/server/analysis_results/export_model/{{ project.key }}/{{ analyser.username }}" class="btn btn-success" target="download_iframe"><span class="glyphicon glyphicon-floppy-save"></span> Export Model</a>
+                            <a href="/frontend/projects/analysis/analyser_results/{{ project.key }}/{{ analyser.user_data.username }}/{{ analyser.id }}" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Model</a>
+                            
                         </div>
+                        <div class="btn-group btn-group-sm">
+                            <ul class="nav navbar-nav" >
+
+                                <li ui-sref-active="active" dropdown>
+                                    <a dropdown-toggle class="btn btn-success" style="background-color:#419641;padding:4px;font-size: 12px;"><span class="glyphicon glyphicon-floppy-save"></span> Export Model <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/server/analysis_results/export_model/JSON/{{ project.key }}/{{ analyser.user_data.username }}/{{ analyser.id }}"  target="download_iframe">JSON</a></li>
+                                    <li><a href="/server/analysis_results/export_model/CSV/{{ project.key }}/{{ analyser.user_data.username }}/{{ analyser.id }}"  target="download_iframe">CSV</a></li>
+                                    </ul>
+                                </li>
+                            </ul>  
+                      </div>
+                        
                     </td>
                 </tr>
                 </tbody>
             </table>
             <p class="text-right">
-                {{ analysers.length }} {{ analysers.length == 1 ? "Analyser" : "Analysers" }}
+                {{ analysers.length }} {{ analysers.length == 1 ? "Result" : "Results" }}
             </p>
         </div>
     </div>

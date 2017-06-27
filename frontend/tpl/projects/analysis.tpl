@@ -72,6 +72,7 @@
             </div>
 
             <div class="pull-right">
+                <button type="button" class="btn btn-info" ng-click="add_comment();"><span class="glyphicon glyphicon-info-sign"></span> Add Comments</button>
                 <button type="button" class="btn btn-info" ng-click="show_info_message();"><span class="glyphicon glyphicon-info-sign"></span> Info Message</button>
             </div>
         </div>

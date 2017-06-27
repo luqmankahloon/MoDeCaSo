@@ -6,7 +6,16 @@
             <a class="btn btn-default" href="/frontend/projects/analysis/results/{{ project_key }}"><span class="glyphicon glyphicon-arrow-left"></span> Back to Analysis Results</a>
         </div>
         <div class="pull-right">
-            <a href="/server/analysis_results/export_model/{{ project_key }}/{{ user.username }}" class="btn btn-default" target="download_iframe"><span class="glyphicon glyphicon-floppy-save"></span> Export Model</a>
+            <ul class="nav navbar-nav" >
+
+                <li ui-sref-active="active" dropdown>
+                    <a dropdown-toggle class="btn btn-default" style="padding: 6px;"><span class="glyphicon glyphicon-floppy-save"></span> Export Model <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                    <li><a href="/server/analysis_results/export_model/JSON/{{ project_key }}/{{ user.username }}/{{ analysis_id }}"  target="download_iframe">JSON</a></li>
+                    <li><a href="/server/analysis_results/export_model/CSV/{{ project_key }}/{{ user.username }}/{{ analysis_id }}"  target="download_iframe">CSV</a></li>
+                    </ul>
+                </li>
+            </ul>  
         </div>
     </div>
 

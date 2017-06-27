@@ -4,6 +4,18 @@
     </h1>
 
     <div class="form-group" style="padding-bottom: 50px; ">
+        <div class="pull-left">
+            <ul class="nav navbar-nav" >
+
+                <li ui-sref-active="active" dropdown>
+                    <a dropdown-toggle class="btn btn-default" style="padding: 6px;"><span class="glyphicon glyphicon-floppy-save"></span> Export Project Model <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                    <li><a href="/server/projects/export_model/JSON/{{ project.key }}"  target="download_iframe">JSON</a></li>
+                    <li><a href="/server/projects/export_model/CSV/{{ project.key }}"  target="download_iframe">CSV</a></li>
+                    </ul>
+                </li>
+            </ul>  
+        </div>
         <div class="pull-right">
             <a ui-sref="/projects/overview" class="btn btn-default"><span class="glyphicon glyphicon-list"></span> View All Projects</a>
         </div>
@@ -33,19 +45,19 @@
                     <th style="width: 5%;">
                         Order
                     </th>
-                    <th style="width: 20%;">
+                    <th style="width: 15%;">
                         First Name
                     </th>
-                    <th style="width: 20%;">
+                    <th style="width: 15%;">
                         Last Name
                     </th>
-                    <th style="width: 30%;">
+                    <th style="width: 25%;">
                         Email Address
                     </th>
                     <th style="width: 15%;">
                         Status
                     </th>
-                    <th style="width: 10%;">
+                    <th style="width: 25%;">
                         Actions
                     </th>
                 </tr>
@@ -71,6 +83,18 @@
                         <div class="btn-group btn-group-sm">
                             <a ng-disabled="participant.status != 'COMPLETED'" href="/frontend/projects/participant_results/{{ project.key }}/{{ participant.id }}" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> View Model</a>
                         </div>
+                        <div class="btn-group btn-group-sm">
+                            <ul class="nav navbar-nav">
+
+                                <li ui-sref-active="active" dropdown >
+                                    <a ng-disabled="participant.status != 'COMPLETED'" dropdown-toggle class="btn btn-success" style="background-color:#419641;padding:4px;font-size: 12px;"><span class="glyphicon glyphicon-floppy-save"></span> Export Model <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/server/projects/participant_results/export_model/JSON/{{ project.key }}/{{ participant.id }}"  target="download_iframe">JSON</a></li>
+                                    <li><a href="/server/projects/participant_results/export_model/CSV/{{ project.key }}/{{ participant.id }}"  target="download_iframe">CSV</a></li>
+                                    </ul>
+                                </li>
+                            </ul>  
+                      </div>
                     </td>
                 </tr>
                 </tbody>

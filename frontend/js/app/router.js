@@ -915,7 +915,7 @@ webapp.config([
         .state(
             "/projects/analysis/analysis_results",
             {
-                url: "/frontend/projects/analysis/analyser_results/:project_key/:user_name",
+                url: "/frontend/projects/analysis/analyser_results/:project_key/:user_name/:model_id",
                 role: "MODERATOR",
                 title: "Analyser Model",
                 views: {
@@ -934,6 +934,13 @@ webapp.config([
                                 function($stateParams)
                                 {
                                     return $stateParams.user_name;
+                                }
+                            ],
+                            model_id: [
+                                "$stateParams",
+                                function($stateParams)
+                                {
+                                    return $stateParams.model_id;
                                 }
                             ]
                         },

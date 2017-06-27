@@ -42,17 +42,18 @@ class analysis_results
         if ($this->database->row_count() == 1) {
             $project = $this->database->result()[0];
             $project_id = $project['id'];
-            $this->database->select("experiment_final_models", "`user_id`", "`project` = '".$project_id."'","`user_id`");
+            $this->database->select("experiment_analysis", NULL, "`project` = '".$project_id."'");
             $model_selector = $this->database->result();
             $analysers= [];
             for ($i = 0; $i < count($model_selector); $i++) {
                 $this->database->select("users", null, "`id` = '".$model_selector[$i]['user_id']."'");
-                array_push($analysers, $this->database->result()[0]);
+                $model_selector[$i]['user_data'] = $this->database->result()[0];
+                //array_push($analysers, $this->database->result()[0]);
             }
             $result = array(
                 'error'         => false,
                 'project'       => $project,
-                'analysers'  => $analysers,
+                'analysers'  => $model_selector,
             );
         }else {
             /*
@@ -67,7 +68,7 @@ class analysis_results
         return $result;
       
     }
-    public function get_analyser_results($project_key, $user_name)
+    public function get_analyser_results($project_key, $user_name, $model_id)
     {
         $this->database->select("projects", null, "`key` = '".$project_key."'");
         $project = $this->database->result()[0];
@@ -81,14 +82,14 @@ class analysis_results
          * Get Experiment data
          * Categories
          */
-        $this->database->select("experiment_final_models", "`category`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'", "`category`");
+        $this->database->select("experiment_final_models", "`category`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `analysis_id` = '".$model_id."'", "`category`");
         $categories = $this->database->result();
         //print_r($categories);
         for ($i = 0; $i < count($categories); $i++) {
             /*
              * Get Cards in Category
              */
-            $this->database->select("experiment_final_models", "`card`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `category` = '".$categories[$i]['category']."'");
+            $this->database->select("experiment_final_models", "`card`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `category` = '".$categories[$i]['category']."' AND `analysis_id` = '".$model_id."'");
             $cards_in_category = $this->database->result();
 
             $cards_model = array();
@@ -109,11 +110,14 @@ class analysis_results
 
         return array(
             'categories'        => $categories,
-            'user'       => $user
+            'user'       => $user,
+            'analysis_id'       => $model_id
         );
     }
-    public function export_model($project_key,$user_name)
+    public function export_model($type,$project_key,$user_name, $model_id)
     {
+        
+        $csv = '"user_id","card_label","card_id","category_label","category_id"'.PHP_EOL;
         $this->database->select("projects", null, "`key` = '".$project_key."'");
         $project = $this->database->result()[0];
         $project_id = $project['id'];
@@ -122,32 +126,47 @@ class analysis_results
         $user = $this->database->result()[0];
         $user_id = $user['id'];
 
-        $this->database->select("experiment_final_models", "`category`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."'", "`category`");
+        $this->database->select("experiment_categories", "distinct(text)", "`project` = '".$project_id."'");
+        $u_categories = $this->database->result();
+
+        $this->database->select("experiment_final_models", "`id` as `category_id`,`category` as `category_label`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `analysis_id` = '".$model_id."'", "`category`");
         $categories = $this->database->result();
         //print_r($categories);
+
         for ($i = 0; $i < count($categories); $i++) {
             /*
              * Get Cards in Category
              */
-            $this->database->select("experiment_final_models", "`card`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `category` = '".$categories[$i]['category']."'");
+            $this->database->select("experiment_final_models", "`card`", "`project` = '".$project_id."' AND `user_id` = '".$user_id."' AND `category` = '".$categories[$i]['category_label']."' AND `analysis_id` = '".$model_id."'");
             $cards_in_category = $this->database->result();
 
             $cards_model = array();
 
             foreach ($cards_in_category as $card_in_category) {
-                $this->database->select("project_cards", "`text`, `tooltip`", "`id` = '".$card_in_category['card']."'");
+                $this->database->select("project_cards", "`id` as `card_id`,`text` as `card_label`, `tooltip`", "`id` = '".$card_in_category['card']."'");
                 $card = $this->database->result()[0];
 
                 $cards_model[] = $card;
+                foreach($u_categories as $key => $product)
+                {
+                    if ( $product['text'] == $categories[$i]['category_label'] )
+                        $temp= $key+1;
+                }
+                $csv .= '"1","'.$card['card_label'].'","'.$card['card_id'].'","'.$categories[$i]['category_label'].'","'.$temp.'"'.PHP_EOL;
+
             }
 
             $categories[$i]['cards'] = $cards_model;
             
 
         }
-        //print_r($user);
-
-        return  $categories;
+        $JSON[]= array('user' => array('user_id' => 1),
+                 'category' => $categories
+                );
+        if($type == "JSON")
+            return  $JSON;
+        else
+            return $csv;
     }
 
 

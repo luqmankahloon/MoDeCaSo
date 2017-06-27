@@ -40,7 +40,7 @@ class analysis_results_controller extends controller
                 );
 
                 $this->app->get(
-                    "/get_analyser_results/:project_key/:user_name",
+                    "/get_analyser_results/:project_key/:user_name/:model_id",
                     array(
                         $this,
                         'get_analyser_results'
@@ -48,7 +48,7 @@ class analysis_results_controller extends controller
                 );
 
                 $this->app->get(
-                    "/export_model/:project_key/:user_name",
+                    "/export_model/:type/:project_key/:user_name/:model_id",
                     array(
                         $this,
                         'export_model'
@@ -97,23 +97,31 @@ class analysis_results_controller extends controller
     }
 
  
-    public function get_analyser_results($project_key, $user_name)
+    public function get_analyser_results($project_key, $user_name, $model_id)
     {
         $this->app->render(
             200,
-            $this->model->get_analyser_results($project_key, $user_name)
+            $this->model->get_analyser_results($project_key, $user_name, $model_id)
         );
     }
-    public function export_model($project_key, $user_name)
+    public function export_model($type, $project_key, $user_name, $model_id)
     { 
 
-            $export = $this->model->export_model($project_key, $user_name);
+            $export = $this->model->export_model($type,$project_key, $user_name, $model_id);
+            
             $file = new file($this->app);
-            $file->set_filename($project_key."_".$user_name."_".date("Ymdhis").".json");
-            $file->set_mimetype("application/json");
-            $file->set_file_contents(json_encode($export, JSON_PRETTY_PRINT));
+            if($type == "JSON"){
+                $file->set_filename($project_key."_".$user_name."_".date("Ymdhis").".json");
+                $file->set_mimetype("application/json");
+                $file->set_file_contents(json_encode($export,JSON_PRETTY_PRINT));
+            }
+            else{
+                $file->set_filename($project_key."_".$user_name."_".date("Ymdhis").".csv");
+                $file->set_mimetype("text/csv");
+                $file->set_file_contents($export);
+            }
+            
             $file->serve();
-
     }
 
 }

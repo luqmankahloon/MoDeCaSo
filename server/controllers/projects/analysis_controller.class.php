@@ -118,9 +118,10 @@ class analysis_controller extends controller
     public function save_final_model($project_key)
     {
          $model_categories = $this->request->model_categories;
+         $model_comment = $this->request->model_comment;
 
         if ($this->auth->authenticate($this->get_api_key(), user_roles::MODERATOR)) {
-            $result = $this->model->save_final_model($project_key,$model_categories,$this->get_user_id());
+            $result = $this->model->save_final_model($project_key,$model_categories,$model_comment,$this->get_user_id());
             
 
             $this->database->select("users", "`username`" , "`id` = '".$this->get_user_id()."'");

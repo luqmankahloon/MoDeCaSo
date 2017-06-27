@@ -30,6 +30,7 @@ controllers.controller(
             $scope.message = "";
             $scope.show_message = true;
             $scope.width = null;
+            $scope.comment = "";
 
             $scope.status_flash = {
                 "show":     false,
@@ -294,8 +295,8 @@ controllers.controller(
                         $scope.model_categories       = response.data.model_categories;
                         $scope.unsorted_cards   = response.data.unsorted_cards;
 
-                        console.log($scope.unsorted_cards);
-                        console.log($scope.model_categories);
+                        //console.log($scope.unsorted_cards);
+                        //console.log($scope.model_categories);
 
                         $scope.unsorted_cards.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
                         $scope.model_categories.sort(sort_by("text", false, function(a){return a.toUpperCase()}));
@@ -312,7 +313,7 @@ controllers.controller(
                         if(response.data.flash_message != ""){
                             $scope.status_flash.show = true;
                             $scope.status_flash.type = "alert-warning";
-                            $scope.status_flash.message = "<span class='glyphicon glyphicon-warning-sign'></span> <strong>" + "Suggestion:" + "</strong> <br />All cards of following category(ies)"+response.data.flash_message+"<br /> are in the other selected categories on the basis of the most number of occurrences according to users of this experiment. <br />So you can unselect this(these) category(ies).";
+                            $scope.status_flash.message = "<span class='glyphicon glyphicon-warning-sign'></span> <strong>" + "Suggestion:" + "</strong> <br />All cards of following "+(response.data.number_of_flash_cat == 1 ? 'category' : 'categories')+"<b>"+response.data.flash_message+"</b><br /> are in the other selected categories on the basis of the most number of occurrences according to participants of this experiment. <br />So you can unselect "+(response.data.number_of_flash_cat == 1 ? 'this category.' : 'these categories.')+"<br /><b>Empty categories will not be saved to final model.</b>";
                         }
                         //shake_element($("#project_flash"));
                         if($scope.show_message){
@@ -376,7 +377,8 @@ controllers.controller(
                     method:     "post",
                     url:        "/server/analysis/save_final_model/" + $scope.key,
                     data:       {
-                        model_categories:     $scope.model_categories
+                        model_categories:     $scope.model_categories,
+                        model_comment:        $scope.comment
                     }
                 }).then(
                     function(response)
@@ -401,6 +403,7 @@ controllers.controller(
 
             $scope.show_info_message = function()
             {
+                
                 $scope.welcome = $modal.open(
                     {
                         templateUrl:    "/frontend/tpl/projects/info.tpl",
@@ -409,6 +412,26 @@ controllers.controller(
                     }
                 );
             }; 
+
+            $scope.add_comment = function()
+            {
+                
+                $scope.add_comment_modal = $modal.open(
+                    {
+                        templateUrl:    "/frontend/tpl/projects/add_comment.tpl",
+                        scope:          $scope,
+                        backdrop:       "static"
+                    }
+                );
+
+            }; 
+            $scope.submit_comment= function(){
+
+                
+                $scope.comment = $("#comment_text").val();
+                console.log($scope.comment);
+
+            }
         }
 
     ]

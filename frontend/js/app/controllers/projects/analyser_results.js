@@ -18,10 +18,12 @@ controllers.controller(
         "$modal",
         "project_key",
         "user_name",
-        function($scope, $http, $modal, project_key, user_name)
+        "model_id",
+        function($scope, $http, $modal, project_key, user_name, model_id)
         {
             $scope.project_key = project_key;
             $scope.user_name = user_name;
+            $scope.model_id = model_id;
 
             $scope.categories = [];
 
@@ -46,11 +48,13 @@ controllers.controller(
 
             $http({
                 method:     "get",
-                url:        "/server/analysis_results/get_analyser_results/" + $scope.project_key + "/" + $scope.user_name
+                url:        "/server/analysis_results/get_analyser_results/" + $scope.project_key + "/" + $scope.user_name + "/" + $scope.model_id
             }).then(
                 function(response)
                 {
+                    //console.log($scope);
                     $scope.user       = response.data.user;
+                    $scope.analysis_id = response.data.analysis_id;
                     $scope.categories = response.data.categories;
 
                     for (var i = 0; i < $scope.categories.length; i++) {

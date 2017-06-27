@@ -17,6 +17,7 @@ namespace controllers;
 use data\user_roles;
 use main\controller;
 use model\projects;
+use tools\file;
 
 class projects_controller extends controller
 {
@@ -64,6 +65,22 @@ class projects_controller extends controller
                     array(
                         $this,
                         'get_results'
+                    )
+                );
+
+                $this->app->get(
+                    "/participant_results/export_model/:type/:project_key/:participant",
+                    array(
+                        $this,
+                        'export_model'
+                    )
+                );
+
+                $this->app->get(
+                    "/export_model/:type/:project_key",
+                    array(
+                        $this,
+                        'export_project_model'
                     )
                 );
             }
@@ -285,6 +302,50 @@ class projects_controller extends controller
             200,
             $this->model->get_results($project_key, $participant)
         );
+    }
+
+    public function export_model($type, $project_key, $participant)
+    { 
+
+            
+            $export = $this->model->export_model($type,$project_key, $participant);
+
+            $this->database->select("project_participants", null, "`id` = '".$participant."'");
+            $participant = $this->database->result()[0];
+            
+            $file = new file($this->app);
+            if($type == "JSON"){
+                $file->set_filename($project_key."_".$participant['last_name']."_".date("Ymdhis").".json");
+                $file->set_mimetype("application/json");
+                $file->set_file_contents(json_encode($export,JSON_PRETTY_PRINT));
+            }
+            else{
+                $file->set_filename($project_key."_".$participant['last_name']."_".date("Ymdhis").".csv");
+                $file->set_mimetype("text/csv");
+                $file->set_file_contents($export);
+            }
+            
+            $file->serve();
+    }
+
+    public function export_project_model($type, $project_key)
+    { 
+
+            $export = $this->model->export_project_model($type,$project_key);
+
+            $file = new file($this->app);
+            if($type == "JSON"){
+                $file->set_filename($project_key."_".date("Ymdhis").".json");
+                $file->set_mimetype("application/json");
+                $file->set_file_contents(json_encode($export,JSON_PRETTY_PRINT));
+            }
+            else{
+                $file->set_filename($project_key."_".date("Ymdhis").".csv");
+                $file->set_mimetype("text/csv");
+                $file->set_file_contents($export);
+            }
+            
+            $file->serve();
     }
 
 }

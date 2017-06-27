@@ -430,4 +430,118 @@ class projects
         );
     }
 
+    public function export_model($type,$project_key, $participant)
+    {
+        $csv = '"user_id","card_label","card_id","category_label","category_id"'.PHP_EOL;
+        
+        $project_id = projects::get_project_id($project_key);
+
+        $this->database->select("experiment_categories", "distinct(text)", "`project` = '".$project_id."'");
+        $u_categories = $this->database->result();
+
+        /*
+         * Get Experiment data
+         * Categories
+         */
+        $this->database->select("experiment_categories", "`id` as `category_id`, `text` as `category_label`", "`project` = '".$project_id."' AND `participant` = '".$participant."'");
+        $categories = $this->database->result();
+
+        for ($i = 0; $i < count($categories); $i++) {
+            /*
+             * Get Cards in Category
+             */
+            $this->database->select("experiment_models", "`card`", "`project` = '".$project_id."' AND `participant` = '".$participant."' AND `category` = '".$categories[$i]['category_id']."'");
+            $cards_in_category = $this->database->result();
+
+            $cards_model = array();
+
+            foreach ($cards_in_category as $card_in_category) {
+                $this->database->select("project_cards", "`id` as `card_id`, `text` as `card_label`, `tooltip`", "`id` = '".$card_in_category['card']."'");
+                $card = $this->database->result()[0];
+
+                $cards_model[] = $card;
+
+                foreach($u_categories as $key => $product)
+                {
+                    if ( $product['text'] == $categories[$i]['category_label'] )
+                        $temp= $key+1;
+                }
+                $csv .= '"1","'.$card['card_label'].'","'.$card['card_id'].'","'.$categories[$i]['category_label'].'","'.$temp.'"'.PHP_EOL;
+
+            }
+
+            $categories[$i]['cards'] = $cards_model;
+
+        }
+        $JSON[]= array('user' => array('user_id' => 1),
+                 'category' => $categories
+                );
+        if($type == "JSON")
+            return  $JSON;
+        else
+            return $csv;
+    }
+
+    public function export_project_model($type,$project_key)
+    {
+        $csv = '"user_id","card_label","card_id","category_label","category_id"'.PHP_EOL;
+        
+        $project_id = projects::get_project_id($project_key);
+
+        $this->database->select("project_participants", "`id` as `user_id`", " status = ".participant_statuses::COMPLETED." AND `project` = '".$project_id."'", null, null, "`order` ASC");
+        $project_participants = $this->database->result();
+
+        //print_r($project_participants);
+
+        $this->database->select("experiment_categories", "distinct(text)", "`project` = '".$project_id."'");
+        $u_categories = $this->database->result();
+        $j=1;
+        /* Getting categories and cards for all users (user by user)*/
+        foreach ($project_participants as $participant) 
+        {
+            $this->database->select("experiment_categories", "`id` as `category_id`, `text` as `category_label`", "`project` = '".$project_id."' AND `participant` = '".$participant['user_id']."'");
+            $categories = $this->database->result();
+            
+            for ($i = 0; $i < count($categories); $i++) 
+            {
+                /* Get Cards in Category */
+                $this->database->select("experiment_models", "`card`", "`project` = '".$project_id."' AND `participant` = '".$participant['user_id']."' AND `category` = '".$categories[$i]['category_id']."'");
+                $cards_in_category = $this->database->result();
+
+                $cards_model = array();
+
+                foreach ($cards_in_category as $card_in_category) 
+                {
+                    $this->database->select("project_cards", "`id` as `card_id`, `text` as `card_label`, `tooltip`", "`id` = '".$card_in_category['card']."'");
+                    $card = $this->database->result()[0];
+
+                    $cards_model[] = $card;
+                    //$participants_model[$participant['first_name'].' '.$participant['last_name']][$categories[$i]['text']][]=$card;
+
+                   foreach($u_categories as $key => $product)
+                    {
+                        if ( $product['text'] == $categories[$i]['category_label'] )
+                            $temp= $key+1;
+                    }
+                                        
+                    $csv .= '"'.$j.'","'.$card['card_label'].'","'.$card['card_id'].'","'.$categories[$i]['category_label'].'","'.$temp.'"'.PHP_EOL;
+                } 
+                    $categories[$i]['cards'] = $cards_model;
+                 
+              
+            }
+            $participant['user_id'] = $j;
+            $JSON[]= array('user' => $participant,
+                                         'category' => $categories
+                                        );
+            $j++;
+        }
+
+
+        if($type == "JSON")
+            return  $JSON;
+        else
+            return $csv;
+    }
+
 }

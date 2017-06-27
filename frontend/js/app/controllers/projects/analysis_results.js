@@ -34,6 +34,10 @@ controllers.controller(
                     {
                         $scope.project   = response.data.project;
                         $scope.analysers = response.data.analysers;
+                        for(i = 0 ; i < $scope.analysers.length; i++) {    
+                                $scope.analysers[i].comment=$scope.analysers[i].comment.replace(/\n/gi, "<br>");      
+                        }
+                       
                     }
                 );
             };

@@ -1,5 +1,5 @@
 <div class="page">
-    <h1>Analysis Results for {{ user.first_name }} {{ user.last_name }} ({{ project_key }})</h1>
+    <h1>Analysis Result of {{ user.first_name }} {{ user.last_name }} ({{ project_key }})</h1>
 
     <div class="form-group" style="padding-bottom: 50px; ">
         <div class="pull-left">

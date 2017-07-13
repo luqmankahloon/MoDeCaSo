@@ -313,7 +313,7 @@ controllers.controller(
                         if(response.data.flash_message != ""){
                             $scope.status_flash.show = true;
                             $scope.status_flash.type = "alert-warning";
-                            $scope.status_flash.message = "<span class='glyphicon glyphicon-warning-sign'></span> <strong>" + "Suggestion:" + "</strong> <br />All cards of following "+(response.data.number_of_flash_cat == 1 ? 'category' : 'categories')+"<b>"+response.data.flash_message+"</b><br /> are in the other selected categories on the basis of the most number of occurrences according to participants of this experiment. <br />So you can unselect "+(response.data.number_of_flash_cat == 1 ? 'this category.' : 'these categories.')+"<br /><b>Empty categories will not be saved to final model.</b>";
+                            $scope.status_flash.message = "<span class='glyphicon glyphicon-warning-sign'></span> <strong>" + "Suggestion:" + "</strong> <br />No cards were placed in the following "+(response.data.number_of_flash_cat == 1 ? 'category' : 'categories')+" by the algorithm.<b>"+response.data.flash_message+"</b><br /><b>Empty categories will not be saved to the final model.</b><br />"+(response.data.number_of_flash_cat == 1 ? 'This category' : 'These categories')+" can be unselected to remove this warning.";
                         }
                         //shake_element($("#project_flash"));
                         if($scope.show_message){
@@ -383,7 +383,9 @@ controllers.controller(
                 }).then(
                     function(response)
                     {
+                        //console.log(response);
                         $scope.user_name   = response.data.user_name;
+                        $scope.model_id   = response.data.model_id;
                         $scope.thank_you =$modal.open(
                             {
                                 templateUrl:    "/frontend/tpl/projects/thank_you.tpl",
@@ -396,7 +398,7 @@ controllers.controller(
             };
             $scope.changeState = function () {
                 //$scope.$close(true);
-                $state.go('/projects/analysis/analysis_results',{project_key: $scope.key, user_name: $scope.user_name});
+                $state.go('/projects/analysis/analysis_results',{project_key: $scope.key, user_name: $scope.user_name, model_id: $scope.model_id});
                 };
 
 

@@ -12,7 +12,7 @@
     <div class="panel panel-default">
         <div class="panel-heading pointer collapsible" ng-click="participants_collapse = !participants_collapse">
             <h3 class="panel-title">
-                <span class="glyphicon glyphicon-user upb-blue"></span> Analyser Results
+                <span class="glyphicon glyphicon-user upb-blue"></span> Analysis Results
                 <span class="pull-right">
                     <button class="btn btn-default btn-circle-xs">
                         <span class="glyphicon glyphicon-chevron-up" ng-show="!participants_collapse"></span>

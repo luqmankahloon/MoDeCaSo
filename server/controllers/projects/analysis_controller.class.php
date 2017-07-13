@@ -121,10 +121,10 @@ class analysis_controller extends controller
          $model_comment = $this->request->model_comment;
 
         if ($this->auth->authenticate($this->get_api_key(), user_roles::MODERATOR)) {
-            $result = $this->model->save_final_model($project_key,$model_categories,$model_comment,$this->get_user_id());
+            $model_id = $this->model->save_final_model($project_key,$model_categories,$model_comment,$this->get_user_id());
             
 
-            $this->database->select("users", "`username`" , "`id` = '".$this->get_user_id()."'");
+        $this->database->select("users", "`username`" , "`id` = '".$this->get_user_id()."'");
         $user = $this->database->result()[0];
         $user_name = $user['username'];
 
@@ -133,7 +133,9 @@ class analysis_controller extends controller
                 array(
                     'error'     => false,
                     'msg'       => "Data saved.",
-                    'user_name' => $user_name
+                    'user_name' => $user_name,
+                    'model_id' => $model_id
+
                 )
             );
         }

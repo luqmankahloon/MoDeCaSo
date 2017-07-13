@@ -513,6 +513,6 @@ class analysis
 
             }
         }
-        return true;
+        return $analysis_id;
     }
 }

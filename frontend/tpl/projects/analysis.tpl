@@ -67,7 +67,7 @@
    
         <div class="form-group" style="padding-bottom: 25px; ">
             <div class="pull-left">
-                <button type="button" class="btn btn-success" ng-click="save_final_model();" ng-disabled="unsorted_cards.length != 0;"><span class="glyphicon glyphicon-log-out"></span> Select as final model</button>
+                <button type="button" class="btn btn-success" ng-click="save_final_model();" ng-disabled="unsorted_cards.length != 0;"><span class="glyphicon glyphicon-log-out"></span> Select as Final Model</button>
                 <button type="button" class="btn btn-default" ng-click="back_analysis();"><span class="glyphicon glyphicon-refresh"></span> Back to Category Analysis</button>
             </div>
 

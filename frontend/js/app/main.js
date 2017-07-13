@@ -59,7 +59,7 @@ var filters = angular.module(
     ]
 );
 
-// Edited by Luqman Ahmad. Added nvd3 sor graphs
+// Edited by Luqman Ahmad. Added nvd3 for graphs
 var webapp = angular.module(
     "webapp",
     [
